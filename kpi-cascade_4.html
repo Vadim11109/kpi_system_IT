@@ -450,6 +450,7 @@ const DATA = {
 };
 
 let hovered = null;
+let eventsAttached = false;
 
 function color(id) { return COLORS[id] || "#1a1a1a"; }
 
@@ -559,15 +560,16 @@ function render() {
 }
 
 function attachEvents() {
-  document.querySelectorAll(".kpi-card").forEach(el => {
-    el.addEventListener("mouseenter", () => {
-      hovered = el.dataset.id;
-      render();
-    });
-    el.addEventListener("mouseleave", () => {
-      hovered = null;
-      render();
-    });
+  if (eventsAttached) return;
+  eventsAttached = true;
+  const app = document.getElementById("app");
+  app.addEventListener("mouseover", (e) => {
+    const card = e.target.closest(".kpi-card");
+    const next = card ? card.dataset.id : null;
+    if (next !== hovered) { hovered = next; render(); }
+  });
+  app.addEventListener("mouseleave", () => {
+    if (hovered !== null) { hovered = null; render(); }
   });
 }
 
