@@ -209,41 +209,30 @@
 
   /* KPI CARD */
   .kpi-card {
-    background: #faf9f7;
-    border: 1px solid #e8e6e0;
+    background: var(--card-bg, #faf9f7);
+    border: 1px solid var(--card-border, #e8e6e0);
+    border-left: 3px solid var(--card-accent, #ccc);
     border-radius: 3px;
     padding: 18px 20px;
     cursor: default;
     transition: all 0.18s ease;
     position: relative;
   }
-  .kpi-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    border-radius: 3px 0 0 3px;
-    background: transparent;
-    transition: background 0.18s;
-  }
   .kpi-card.highlighted {
     background: #fff;
     border-color: var(--card-accent, #1a1a1a);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.10), 0 0 0 1px var(--card-accent, #1a1a1a);
+    border-left-color: var(--card-accent, #1a1a1a);
+    border-left-width: 4px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.11);
     transform: translateY(-2px);
     z-index: 1;
   }
-  .kpi-card.highlighted::before {
-    background: var(--card-accent, #1a1a1a);
-    width: 4px;
-  }
   .kpi-card.dimmed {
-    opacity: 0.2;
-    filter: grayscale(40%);
+    opacity: 0.18;
+    filter: grayscale(50%);
   }
   .kpi-card:hover:not(.dimmed):not(.highlighted) {
     background: #fff;
-    border-color: #b0ada6;
     box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     transform: translateY(-1px);
   }
@@ -258,13 +247,13 @@
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    background: #ebe9e3;
+    background: var(--badge-bg, #2a2a2a);
+    color: var(--badge-text, #fff);
     border-radius: 2px;
     padding: 4px 8px;
     white-space: nowrap;
     margin-top: 2px;
     flex-shrink: 0;
-    color: #444;
   }
   .kpi-body { flex: 1; min-width: 0; }
   .kpi-labelrow {
@@ -376,10 +365,18 @@
 <script>
 const COLORS = {
   K1:"#1a1a1a", K2:"#1a1a1a", K3:"#1a1a1a", K4:"#1a1a1a",
-  C1:"#b8860b", C2:"#b8860b", C3:"#b8860b", C4:"#b8860b",
-  R1:"#4a7c59", R2:"#4a7c59", R3:"#4a7c59", R4:"#4a7c59", R5:"#4a7c59",
-  P1:"#3d6491", P2:"#3d6491", P3:"#3d6491", P4:"#3d6491",
-  S1:"#7a5c8a", S2:"#7a5c8a", S3:"#7a5c8a", S4:"#7a5c8a",
+  C1:"#8a6800", C2:"#8a6800", C3:"#8a6800", C4:"#8a6800",
+  R1:"#2e6b48", R2:"#2e6b48", R3:"#2e6b48", R4:"#2e6b48", R5:"#2e6b48",
+  P1:"#2a5480", P2:"#2a5480", P3:"#2a5480", P4:"#2a5480",
+  S1:"#5c3d7a", S2:"#5c3d7a", S3:"#5c3d7a", S4:"#5c3d7a",
+};
+
+const LEVEL_STYLES = {
+  K: { bg:"#f5f5f4", border:"#d8d7d4", badgeBg:"#1a1a1a", badgeText:"#fff" },
+  C: { bg:"#fdf8eb", border:"#e8d99a", badgeBg:"#8a6800", badgeText:"#fff" },
+  R: { bg:"#eef7f2", border:"#a8d9bc", badgeBg:"#2e6b48", badgeText:"#fff" },
+  P: { bg:"#edf3fa", border:"#a8c4e0", badgeBg:"#2a5480", badgeText:"#fff" },
+  S: { bg:"#f5eefa", border:"#cdb8e0", badgeBg:"#5c3d7a", badgeText:"#fff" },
 };
 
 const DATA = {
@@ -460,16 +457,25 @@ function kpiCard(kpi) {
   const isHL = hovered === kpi.trace || hovered === kpi.id;
   const isDim = hovered && !isHL;
   const accentColor = color(kpi.id);
+  const prefix = kpi.id[0];
+  const lvl = LEVEL_STYLES[prefix] || LEVEL_STYLES.K;
   const traceColor = kpi.trace ? color(kpi.trace) : "#bbb";
   const traceHtml = kpi.trace
     ? `<div class="kpi-trace" style="color:${traceColor}">↑ трассируется из <strong>${kpi.trace}</strong></div>`
     : "";
+  const cssVars = [
+    `--card-accent:${accentColor}`,
+    `--card-bg:${lvl.bg}`,
+    `--card-border:${lvl.border}`,
+    `--badge-bg:${lvl.badgeBg}`,
+    `--badge-text:${lvl.badgeText}`,
+  ].join(";");
   return `
     <div class="kpi-card ${isHL?"highlighted":""} ${isDim?"dimmed":""}"
-         style="--card-accent:${accentColor}"
+         style="${cssVars}"
          data-id="${kpi.id}" data-trace="${kpi.trace||""}">
       <div class="kpi-top">
-        <span class="kpi-id" style="${isHL ? `color:${accentColor};background:${accentColor}12` : ""}">${kpi.id}</span>
+        <span class="kpi-id">${kpi.id}</span>
         <div class="kpi-body">
           <div class="kpi-labelrow">
             <span class="kpi-label">${kpi.label}</span>
@@ -484,13 +490,13 @@ function kpiCard(kpi) {
 
 function roleSection(role, highlight) {
   const badges = role.tracesFrom.map(t =>
-    `<span class="trace-badge" style="color:${color(t)};border-color:${color(t)}30">↑ ${t}</span>`
+    `<span class="trace-badge" style="color:${color(t)};border-color:${color(t)}40;background:${color(t)}0d">↑ ${t}</span>`
   ).join("");
   const cards = role.kpis.map(kpiCard).join("");
   return `
     <div class="role-section">
       <div class="role-header">
-        <span class="role-name">${role.role}</span>
+        <span class="role-name" style="color:${highlight}">${role.role}</span>
         <div class="trace-badges">${badges}</div>
       </div>
       <div class="kpi-grid">${cards}</div>
@@ -511,9 +517,8 @@ function render() {
     }).join("");
 
     return `
-      <div class="stream-block">
+      <div class="stream-block" style="border-top:3px solid ${s.highlight}">
         <div class="stream-header-row">
-          <div class="stream-accent-line" style="background:${s.highlight}"></div>
           <div>
             <div class="stream-title">${s.title}</div>
           </div>
