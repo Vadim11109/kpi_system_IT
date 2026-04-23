@@ -4,131 +4,196 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KPI Каскад — Sminex ИТ Департамент</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: #0a0a14;
-    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f5f4f0;
+    color: #1a1a1a;
     min-height: 100vh;
-    padding: 32px 24px;
+    padding: 56px 40px;
+    font-weight: 400;
   }
 
   /* HEADER */
   .header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid #d9d7d0;
   }
-  .header-label {
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: #e94560;
+  .header-eyebrow {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: #888;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
   }
   .header h1 {
-    font-size: 24px;
-    font-weight: 800;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 600;
     letter-spacing: -0.5px;
+    color: #111;
+    line-height: 1.2;
   }
   .header p {
-    margin-top: 6px;
+    margin-top: 14px;
     font-size: 13px;
-    color: rgba(255,255,255,0.4);
+    color: #888;
+    font-weight: 300;
+    letter-spacing: 0.2px;
+  }
+
+  /* LEVEL LABEL */
+  .level-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 12px;
+    padding-left: 2px;
   }
 
   /* DEPT BLOCK */
   .dept-block {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 1px solid rgba(233,69,96,0.4);
-    border-radius: 14px;
-    padding: 22px;
-    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #e2e0da;
+    border-top: 3px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 12px;
   }
   .block-title-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 16px;
+    margin-bottom: 28px;
   }
-  .accent-bar {
-    width: 4px;
-    border-radius: 2px;
-    flex-shrink: 0;
+  .block-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
   }
-  .block-title { font-size: 15px; font-weight: 800; }
-  .block-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+  .block-sub {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+  }
 
-  /* ARROW */
-  .arrow {
+  /* ARROW DIVIDER */
+  .arrow-divider {
     text-align: center;
-    font-size: 22px;
-    color: rgba(255,255,255,0.18);
-    margin: 12px 0;
+    padding: 16px 0;
+    color: #ccc;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+  .arrow-divider::before {
+    content: '──────────────';
+    color: #ddd;
+    font-size: 10px;
+    letter-spacing: -1px;
+    vertical-align: middle;
+    margin-right: 12px;
+  }
+  .arrow-divider::after {
+    content: '──────────────';
+    color: #ddd;
+    font-size: 10px;
+    letter-spacing: -1px;
+    vertical-align: middle;
+    margin-left: 12px;
   }
 
   /* STREAMS */
   .streams {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 20px;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     .streams { grid-template-columns: 1fr; }
+    body { padding: 32px 20px; }
   }
 
   .stream-block {
-    border-radius: 14px;
-    padding: 20px;
-    border: 1px solid transparent;
+    background: #fff;
+    border: 1px solid #e2e0da;
+    border-radius: 4px;
+    padding: 28px;
   }
 
-  /* TAG CHIPS */
+  /* CHIPS */
   .chip-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 18px;
+    gap: 6px;
+    margin-bottom: 28px;
   }
   .chip {
-    font-size: 10px;
-    border-radius: 4px;
-    padding: 3px 8px;
-    border: 1px solid transparent;
-    font-weight: 600;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    padding: 4px 10px;
+    border: 1px solid;
+    background: transparent;
   }
 
   /* ROLE SECTION */
-  .role-section { margin-bottom: 18px; }
+  .role-section { margin-bottom: 24px; }
+  .role-section:last-child { margin-bottom: 0; }
   .role-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
   }
-  .role-bar { width: 3px; height: 18px; border-radius: 2px; flex-shrink: 0; }
   .role-name {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #ddd;
-  }
-  .trace-badges { display: flex; gap: 4px; }
-  .trace-badge {
     font-size: 10px;
-    font-weight: 700;
-    background: rgba(0,0,0,0.35);
-    border-radius: 4px;
-    padding: 1px 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #555;
+    flex: 1;
+  }
+  .trace-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+  .trace-badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: #f5f4f0;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 2px 6px;
+    color: #666;
+  }
+
+  /* ROLE SEPARATOR */
+  .role-sep {
+    text-align: center;
+    color: #ddd;
+    font-size: 16px;
+    margin: 8px 0 20px;
   }
 
   /* KPI GRID */
   .kpi-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
   }
   @media (max-width: 600px) {
     .kpi-grid { grid-template-columns: 1fr; }
@@ -136,38 +201,56 @@
 
   /* KPI CARD */
   .kpi-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 9px;
-    padding: 12px 13px;
+    background: #faf9f7;
+    border: 1px solid #e8e6e0;
+    border-radius: 3px;
+    padding: 14px 16px;
     cursor: default;
-    transition: background 0.18s, border-color 0.18s, opacity 0.18s;
+    transition: all 0.15s ease;
+    position: relative;
   }
-  .kpi-card:hover {
-    background: rgba(255,255,255,0.1);
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+    background: transparent;
+    transition: background 0.15s;
   }
   .kpi-card.highlighted {
-    background: rgba(255,255,255,0.13);
+    background: #fff;
+    border-color: #c8c5bc;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .kpi-card.highlighted::before {
+    background: var(--card-accent, #1a1a1a);
   }
   .kpi-card.dimmed {
-    opacity: 0.28;
+    opacity: 0.3;
+  }
+  .kpi-card:hover:not(.dimmed) {
+    background: #fff;
+    border-color: #c8c5bc;
   }
 
   .kpi-top {
     display: flex;
     align-items: flex-start;
-    gap: 9px;
+    gap: 10px;
   }
   .kpi-id {
-    font-family: monospace;
-    font-size: 10px;
+    font-family: 'Inter', monospace;
+    font-size: 9px;
     font-weight: 700;
-    background: rgba(0,0,0,0.3);
-    border-radius: 4px;
-    padding: 2px 6px;
+    letter-spacing: 1px;
+    background: #f0ede8;
+    border-radius: 2px;
+    padding: 3px 7px;
     white-space: nowrap;
-    margin-top: 1px;
+    margin-top: 2px;
     flex-shrink: 0;
+    color: #555;
   }
   .kpi-body { flex: 1; min-width: 0; }
   .kpi-labelrow {
@@ -178,67 +261,96 @@
   }
   .kpi-label {
     font-size: 12px;
-    font-weight: 600;
-    color: #f0f0f0;
-    line-height: 1.35;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.4;
   }
   .kpi-target {
-    font-size: 11px;
-    font-weight: 700;
-    color: #52b788;
-    background: rgba(82,183,136,0.15);
-    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #4a7c59;
+    background: rgba(74,124,89,0.08);
+    border-radius: 2px;
     padding: 2px 7px;
     white-space: nowrap;
     flex-shrink: 0;
+    letter-spacing: 0.3px;
   }
   .kpi-desc {
     font-size: 11px;
-    color: rgba(255,255,255,0.45);
-    margin-top: 5px;
-    line-height: 1.4;
+    color: #999;
+    margin-top: 6px;
+    line-height: 1.5;
+    font-weight: 300;
   }
   .kpi-trace {
-    margin-top: 6px;
+    margin-top: 8px;
     font-size: 10px;
     display: flex;
     align-items: center;
     gap: 4px;
+    color: #bbb;
+    font-weight: 400;
+  }
+  .kpi-trace strong { font-weight: 600; }
+
+  /* STREAM HEADER */
+  .stream-header-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .stream-accent-line {
+    width: 2px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 1px;
+  }
+  .stream-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #111;
   }
 
   /* LEGEND */
   .legend {
-    margin-top: 20px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 13px 18px;
+    margin-top: 32px;
+    background: #fff;
+    border: 1px solid #e2e0da;
+    border-radius: 4px;
+    padding: 18px 24px;
     display: flex;
-    gap: 20px;
+    gap: 24px;
     flex-wrap: wrap;
     align-items: center;
   }
   .legend-label {
-    font-size: 11px;
-    color: rgba(255,255,255,0.28);
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-size: 9px;
+    color: #bbb;
+    font-weight: 600;
+    letter-spacing: 3px;
     text-transform: uppercase;
   }
-  .legend-item { display: flex; align-items: center; gap: 6px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-  .legend-text { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
+  .legend-text { font-size: 11px; color: #888; font-weight: 400; }
   .legend-hint {
     margin-left: auto;
     font-size: 11px;
-    color: rgba(255,255,255,0.25);
+    color: #ccc;
+    font-weight: 300;
+    font-style: italic;
   }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-label">Sminex · ИТ Департамент</div>
+  <div class="header-eyebrow">Sminex · ИТ Департамент</div>
   <h1>Трассируемая система KPI</h1>
   <p>Один вектор — разная ответственность. Наведите на KPI, чтобы увидеть связи.</p>
 </div>
@@ -247,11 +359,11 @@
 
 <script>
 const COLORS = {
-  K1:"#e94560", K2:"#f4a261", K3:"#e76f51", K4:"#a8dadc",
-  C1:"#53d8fb", C2:"#53d8fb", C3:"#53d8fb", C4:"#53d8fb",
-  R1:"#52b788", R2:"#52b788", R3:"#52b788", R4:"#52b788", R5:"#52b788",
-  P1:"#74c0fc", P2:"#74c0fc", P3:"#74c0fc", P4:"#74c0fc",
-  S1:"#c77dff", S2:"#c77dff", S3:"#c77dff", S4:"#c77dff",
+  K1:"#1a1a1a", K2:"#1a1a1a", K3:"#1a1a1a", K4:"#1a1a1a",
+  C1:"#b8860b", C2:"#b8860b", C3:"#b8860b", C4:"#b8860b",
+  R1:"#4a7c59", R2:"#4a7c59", R3:"#4a7c59", R4:"#4a7c59", R5:"#4a7c59",
+  P1:"#3d6491", P2:"#3d6491", P3:"#3d6491", P4:"#3d6491",
+  S1:"#7a5c8a", S2:"#7a5c8a", S3:"#7a5c8a", S4:"#7a5c8a",
 };
 
 const DATA = {
@@ -267,9 +379,7 @@ const DATA = {
     {
       id: "clusters",
       title: "Продуктовые кластеры",
-      highlight: "#53d8fb",
-      bg: "linear-gradient(135deg, #16213e 0%, rgba(255,255,255,0.01) 100%)",
-      border: "rgba(83,216,251,0.2)",
+      highlight: "#b8860b",
       chips: ["Кластер взаимодействия с клиентами","Кластер корпоративных систем","Кластер цифровизации финансов","Кластер цифровизации строительства"],
       roles: [
         {
@@ -287,8 +397,8 @@ const DATA = {
           tracesFrom: ["C1","C2","C3","C4"],
           kpis: [
             { id:"P1", label:"CSI по продукту", target:"≥ 4.0", trace:"C1", desc:"Оценка стейкхолдером конкретного продукта/сервиса" },
-            { id:"P2", label:"Предсказуемость спринта", target:"≥ 80%", trace:"C2", desc:"% задач из спринт-плана, закрытых в том же спринте без переноса — зрелость планирования PO" },
-            { id:"P3", label:"Фиксация и согласование Acceptance Criteria с бизнесом", target:"≥ 90% задач", trace:"C3", desc:"Доля задач, ушедших в разработку с задокументированными и согласованными с бизнес-заказчиком критериями приёмки в Jira" },
+            { id:"P2", label:"Предсказуемость спринта", target:"≥ 80%", trace:"C2", desc:"% задач из спринт-плана, закрытых в том же спринте без переноса" },
+            { id:"P3", label:"Фиксация и согласование Acceptance Criteria", target:"≥ 90% задач", trace:"C3", desc:"Доля задач, ушедших в разработку с задокументированными и согласованными критериями приёмки в Jira" },
             { id:"P4", label:"Утилизация ресурсов", target:"80–90%", trace:"C4", desc:"Доля рабочего времени аллоцированных специалистов на продуктовых задачах" },
           ]
         }
@@ -297,9 +407,7 @@ const DATA = {
     {
       id: "rce",
       title: "Центры экспертизы (РЦЭ)",
-      highlight: "#52b788",
-      bg: "linear-gradient(135deg, #0d1b2a 0%, rgba(255,255,255,0.01) 100%)",
-      border: "rgba(82,183,136,0.2)",
+      highlight: "#4a7c59",
       chips: ["Backend разработка","Frontend разработка","1С разработка","Системный анализ","UX/UI"],
       roles: [
         {
@@ -308,7 +416,7 @@ const DATA = {
           kpis: [
             { id:"R1", label:"Управление техдолгом", target:"≤ 15% бэклога", trace:"K3", desc:"Доля tech-debt задач в общем бэклоге — РЦЭ инициирует и контролирует расчистку" },
             { id:"R2", label:"Прогнозируемость поставки", target:"откл. ≤ 20%", trace:"K2", desc:"Отклонение факт/план по трудозатратам на задачах специалистов РЦЭ" },
-            { id:"R3", label:"Наличие и соблюдение DoD по всем типам задач РЦЭ", target:"100% покрытие + ≥ 90% соблюдение", trace:"K3", desc:"Для каждого типа задач центра задокументирован Definition of Done, его соблюдение проверяется на регулярном аудите раз в квартал" },
+            { id:"R3", label:"Наличие и соблюдение DoD по всем типам задач", target:"100% + ≥ 90%", trace:"K3", desc:"Для каждого типа задач задокументирован Definition of Done, его соблюдение проверяется на квартальном аудите" },
             { id:"R4", label:"Выполнение ИПР команды", target:"≥ 80%", trace:null, desc:"Доля специалистов, выполнивших план развития за год" },
             { id:"R5", label:"AI Adoption: сокращение трудозатрат", target:"≥ 10%", trace:"K4", desc:"Сокращение часов на задачах, где применяются AI-инструменты, к концу года. Базовый замер — Q1." },
           ]
@@ -318,8 +426,8 @@ const DATA = {
           tracesFrom: ["R1","R2","R3","R5"],
           kpis: [
             { id:"S1", label:"% задач в срок", target:"≥ 85%", trace:"R2", desc:"Личная дисциплина по дедлайнам задач в Jira" },
-            { id:"S2", label:"Соблюдение квоты на разбор техдолга", target:"≥ 15% задач в спринте", trace:"R1", desc:"Специалист резервирует согласованную долю спринта на расчистку технического долга, не только на фичи" },
-            { id:"S3", label:"Выполнение индивидуального плана развития (ИПР)", target:"100%", trace:"R4", desc:"Реализация согласованного с руководителем плана развития — курсы, сертификации, прокачка компетенций по роли" },
+            { id:"S2", label:"Соблюдение квоты на разбор техдолга", target:"≥ 15% задач в спринте", trace:"R1", desc:"Специалист резервирует согласованную долю спринта на расчистку технического долга" },
+            { id:"S3", label:"Выполнение индивидуального плана развития (ИПР)", target:"100%", trace:"R4", desc:"Реализация согласованного с руководителем плана развития — курсы, сертификации, компетенции" },
             { id:"S4", label:"Использование AI в работе", target:"регулярно", trace:"R5", desc:"Фиксация применения AI-инструментов в таймшите / отчёте по треку" },
           ]
         }
@@ -330,20 +438,22 @@ const DATA = {
 
 let hovered = null;
 
-function color(id) { return COLORS[id] || "rgba(255,255,255,0.5)"; }
+function color(id) { return COLORS[id] || "#1a1a1a"; }
 
 function kpiCard(kpi) {
   const isHL = hovered === kpi.trace || hovered === kpi.id;
   const isDim = hovered && !isHL;
+  const accentColor = color(kpi.id);
+  const traceColor = kpi.trace ? color(kpi.trace) : "#bbb";
   const traceHtml = kpi.trace
-    ? `<div class="kpi-trace" style="color:${color(kpi.trace)}">↑ трассируется из <strong>${kpi.trace}</strong></div>`
+    ? `<div class="kpi-trace" style="color:${traceColor}">↑ трассируется из <strong>${kpi.trace}</strong></div>`
     : "";
   return `
     <div class="kpi-card ${isHL?"highlighted":""} ${isDim?"dimmed":""}"
-         style="border-color:${isHL ? color(kpi.id) : "rgba(255,255,255,0.1)"}"
+         style="--card-accent:${accentColor}"
          data-id="${kpi.id}" data-trace="${kpi.trace||""}">
       <div class="kpi-top">
-        <span class="kpi-id" style="color:${color(kpi.id)}">${kpi.id}</span>
+        <span class="kpi-id" style="${isHL ? `color:${accentColor};background:${accentColor}12` : ""}">${kpi.id}</span>
         <div class="kpi-body">
           <div class="kpi-labelrow">
             <span class="kpi-label">${kpi.label}</span>
@@ -358,13 +468,12 @@ function kpiCard(kpi) {
 
 function roleSection(role, highlight) {
   const badges = role.tracesFrom.map(t =>
-    `<span class="trace-badge" style="color:${color(t)}">↑${t}</span>`
+    `<span class="trace-badge" style="color:${color(t)};border-color:${color(t)}30">↑ ${t}</span>`
   ).join("");
   const cards = role.kpis.map(kpiCard).join("");
   return `
     <div class="role-section">
       <div class="role-header">
-        <div class="role-bar" style="background:${highlight}"></div>
         <span class="role-name">${role.role}</span>
         <div class="trace-badges">${badges}</div>
       </div>
@@ -377,20 +486,20 @@ function render() {
 
   const streamsHtml = DATA.streams.map(s => {
     const chips = s.chips.map(c =>
-      `<span class="chip" style="color:${s.highlight};background:${s.highlight}18;border-color:${s.highlight}30">${c}</span>`
+      `<span class="chip" style="color:${s.highlight};border-color:${s.highlight}40">${c}</span>`
     ).join("");
 
     const rolesHtml = s.roles.map((r, i) => {
-      const arrow = i > 0 ? `<div class="arrow" style="margin:6px 0">↓</div>` : "";
-      return arrow + roleSection(r, s.highlight);
+      const sep = i > 0 ? `<div class="role-sep">↓</div>` : "";
+      return sep + roleSection(r, s.highlight);
     }).join("");
 
     return `
-      <div class="stream-block" style="background:${s.bg};border-color:${s.border}">
-        <div class="block-title-row">
-          <div class="accent-bar" style="background:${s.highlight};height:22px"></div>
+      <div class="stream-block">
+        <div class="stream-header-row">
+          <div class="stream-accent-line" style="background:${s.highlight}"></div>
           <div>
-            <div class="block-title" style="color:${s.highlight}">${s.title}</div>
+            <div class="stream-title">${s.title}</div>
           </div>
         </div>
         <div class="chip-row">${chips}</div>
@@ -399,26 +508,27 @@ function render() {
   }).join("");
 
   const html = `
+    <div class="level-label">Уровень 1</div>
     <div class="dept-block">
       <div class="block-title-row">
-        <div class="accent-bar" style="background:#e94560;height:26px"></div>
         <div>
-          <div class="block-title">Уровень 1 — ИТ Департамент</div>
+          <div class="block-title">ИТ Департамент</div>
           <div class="block-sub">Общие KPI · Источник для всех ролей</div>
         </div>
       </div>
       <div class="kpi-grid">${deptCards}</div>
     </div>
-    <div class="arrow">↓</div>
+    <div class="arrow-divider">↓</div>
+    <div class="level-label">Уровень 2</div>
     <div class="streams">${streamsHtml}</div>
     <div class="legend">
       <span class="legend-label">Легенда</span>
       ${[
-        {c:"#e94560", l:"Общий KPI (K1–K4)"},
-        {c:"#53d8fb", l:"Кластер (C1–C4)"},
-        {c:"#52b788", l:"Руководитель РЦЭ (R1–R5)"},
-        {c:"#74c0fc", l:"Product Owner (P1–P4)"},
-        {c:"#c77dff", l:"Специалист РЦЭ (S1–S4)"},
+        {c:"#1a1a1a", l:"Общий KPI (K1–K4)"},
+        {c:"#b8860b", l:"Руководитель кластера (C1–C4)"},
+        {c:"#4a7c59", l:"Руководитель РЦЭ (R1–R5)"},
+        {c:"#3d6491", l:"Product Owner (P1–P4)"},
+        {c:"#7a5c8a", l:"Специалист РЦЭ (S1–S4)"},
       ].map(i=>`<div class="legend-item"><div class="legend-dot" style="background:${i.c}"></div><span class="legend-text">${i.l}</span></div>`).join("")}
       <span class="legend-hint">Наведите на карточку для подсветки трассировки</span>
     </div>`;
