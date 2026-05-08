@@ -348,6 +348,58 @@
     font-weight: 400;
     font-style: italic;
   }
+  /* ZOOM CONTROL */
+  .zoom-control {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: #fff;
+    border: 1px solid #e2e0da;
+    border-radius: 8px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    z-index: 1000;
+    user-select: none;
+  }
+  .zoom-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #999;
+    white-space: nowrap;
+  }
+  .zoom-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a1a1a;
+    min-width: 36px;
+    text-align: right;
+  }
+  input[type=range].zoom-slider {
+    -webkit-appearance: none;
+    width: 120px;
+    height: 4px;
+    background: #e2e0da;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range].zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  input[type=range].zoom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
 </style>
 </head>
 <body>
@@ -360,6 +412,12 @@
 </div>
 
 <div id="app"></div>
+</div>
+
+<div class="zoom-control">
+  <span class="zoom-label">Масштаб</span>
+  <input type="range" class="zoom-slider" id="zoomSlider" min="50" max="100" value="85">
+  <span class="zoom-value" id="zoomValue">85%</span>
 </div>
 
 <script>
@@ -574,6 +632,17 @@ function attachEvents() {
 }
 
 render();
+
+// Zoom
+const slider = document.getElementById("zoomSlider");
+const zoomVal = document.getElementById("zoomValue");
+const inner = document.querySelector(".inner");
+function applyZoom(v) {
+  inner.style.zoom = v / 100;
+  zoomVal.textContent = v + "%";
+}
+applyZoom(slider.value);
+slider.addEventListener("input", () => applyZoom(slider.value));
 </script>
 </body>
 </html>
