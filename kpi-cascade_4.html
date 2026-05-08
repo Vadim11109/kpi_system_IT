@@ -119,37 +119,18 @@
     margin-left: 12px;
   }
 
-  /* HORIZONTAL CASCADE */
-  .cascade-grid {
+  /* STREAMS */
+  .streams {
     display: grid;
-    grid-template-columns: 1fr 44px 1fr 44px 1fr;
-    align-items: start;
-    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
-  .cascade-col {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    min-width: 0;
-  }
-  .cascade-sep {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 52px;
-    color: #bbb;
-    font-size: 22px;
-  }
-  .col-section {
+
+  .stream-block {
     background: #fff;
     border: 1px solid #e2e0da;
     border-radius: 4px;
-    padding: 22px 20px;
-  }
-  .col-section-header {
-    margin-bottom: 16px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid #eee;
+    padding: 24px;
   }
 
   /* CHIPS */
@@ -209,11 +190,15 @@
     margin: 8px 0 20px;
   }
 
-  /* KPI GRID — always single column in cascade layout */
+  /* KPI GRID */
   .kpi-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
+  }
+  /* Dept block: all 4 KPIs in one row */
+  .dept-block .kpi-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   /* KPI CARD */
@@ -425,7 +410,7 @@
 
 <div class="zoom-control">
   <span class="zoom-label">Масштаб</span>
-  <input type="range" class="zoom-slider" id="zoomSlider" min="50" max="100" value="70">
+  <input type="range" class="zoom-slider" id="zoomSlider" min="50" max="100" value="80">
   <span class="zoom-value" id="zoomValue">85%</span>
 </div>
 
@@ -571,65 +556,41 @@ function roleSection(role, highlight) {
     </div>`;
 }
 
-function colSection(stream, roleIdx) {
-  const s = stream;
-  const role = s.roles[roleIdx];
-  if (!role) return "";
-  const chips = roleIdx === 0 ? s.chips.map(c =>
-    `<span class="chip" style="color:${s.highlight};border-color:${s.highlight}40">${c}</span>`
-  ).join("") : "";
-  const badges = role.tracesFrom.map(t =>
-    `<span class="trace-badge" style="color:${color(t)};border-color:${color(t)}40;background:${color(t)}0d">↑ ${t}</span>`
-  ).join("");
-  return `
-    <div class="col-section" style="border-top:3px solid ${s.highlight}">
-      <div class="col-section-header">
-        <div class="stream-title">${s.title}</div>
-        <div class="role-header" style="margin-top:10px;padding-bottom:0;border-bottom:none">
-          <span class="role-name" style="color:${s.highlight}">${role.role}</span>
-          <div class="trace-badges">${badges}</div>
-        </div>
-        ${chips ? `<div class="chip-row" style="margin-top:10px;margin-bottom:0">${chips}</div>` : ""}
-      </div>
-      <div class="kpi-grid">${role.kpis.map(kpiCard).join("")}</div>
-    </div>`;
-}
-
 function render() {
   const deptCards = DATA.dept.kpis.map(kpiCard).join("");
 
-  const col2 = DATA.streams.map(s => colSection(s, 0)).join("");
-  const col3 = DATA.streams.map(s => colSection(s, 1)).join("");
+  const streamsHtml = DATA.streams.map(s => {
+    const chips = s.chips.map(c =>
+      `<span class="chip" style="color:${s.highlight};border-color:${s.highlight}40">${c}</span>`
+    ).join("");
+    const rolesHtml = s.roles.map((r, i) => {
+      const sep = i > 0 ? `<div class="role-sep">↓</div>` : "";
+      return sep + roleSection(r, s.highlight);
+    }).join("");
+    return `
+      <div class="stream-block" style="border-top:3px solid ${s.highlight}">
+        <div class="stream-header-row">
+          <div><div class="stream-title">${s.title}</div></div>
+        </div>
+        <div class="chip-row">${chips}</div>
+        ${rolesHtml}
+      </div>`;
+  }).join("");
 
   const html = `
-    <div class="cascade-grid">
-
-      <div class="cascade-col">
-        <div class="level-label">Уровень 1</div>
-        <div class="col-section" style="border-top:3px solid #1a1a1a">
-          <div class="col-section-header">
-            <div class="stream-title">ИТ Департамент</div>
-            <div class="block-sub" style="margin-top:4px">Общие KPI · Источник для всех ролей</div>
-          </div>
-          <div class="kpi-grid">${deptCards}</div>
+    <div class="level-label">Уровень 1</div>
+    <div class="dept-block">
+      <div class="block-title-row">
+        <div>
+          <div class="block-title">ИТ Департамент</div>
+          <div class="block-sub">Общие KPI · Источник для всех ролей</div>
         </div>
       </div>
-
-      <div class="cascade-sep">→</div>
-
-      <div class="cascade-col">
-        <div class="level-label">Уровень 2</div>
-        ${col2}
-      </div>
-
-      <div class="cascade-sep">→</div>
-
-      <div class="cascade-col">
-        <div class="level-label">Уровень 3</div>
-        ${col3}
-      </div>
-
+      <div class="kpi-grid">${deptCards}</div>
     </div>
+    <div class="arrow-divider">↓</div>
+    <div class="level-label">Уровень 2</div>
+    <div class="streams">${streamsHtml}</div>
     <div class="legend">
       <span class="legend-label">Легенда</span>
       ${[
