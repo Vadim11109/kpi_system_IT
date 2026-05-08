@@ -119,22 +119,37 @@
     margin-left: 12px;
   }
 
-  /* STREAMS */
-  .streams {
+  /* HORIZONTAL CASCADE */
+  .cascade-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr 44px 1fr 44px 1fr;
+    align-items: start;
+    gap: 0;
   }
-  @media (max-width: 960px) {
-    .streams { grid-template-columns: 1fr; }
-    body { padding: 32px 20px; }
+  .cascade-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
   }
-
-  .stream-block {
+  .cascade-sep {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 52px;
+    color: #bbb;
+    font-size: 22px;
+  }
+  .col-section {
     background: #fff;
     border: 1px solid #e2e0da;
     border-radius: 4px;
-    padding: 28px;
+    padding: 22px 20px;
+  }
+  .col-section-header {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #eee;
   }
 
   /* CHIPS */
@@ -194,17 +209,11 @@
     margin: 8px 0 20px;
   }
 
-  /* KPI GRID */
+  /* KPI GRID — always single column in cascade layout */
   .kpi-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .stream-block .kpi-grid {
     grid-template-columns: 1fr;
-  }
-  @media (max-width: 600px) {
-    .kpi-grid { grid-template-columns: 1fr; }
+    gap: 10px;
   }
 
   /* KPI CARD */
@@ -416,7 +425,7 @@
 
 <div class="zoom-control">
   <span class="zoom-label">Масштаб</span>
-  <input type="range" class="zoom-slider" id="zoomSlider" min="50" max="100" value="85">
+  <input type="range" class="zoom-slider" id="zoomSlider" min="50" max="100" value="70">
   <span class="zoom-value" id="zoomValue">85%</span>
 </div>
 
@@ -562,53 +571,73 @@ function roleSection(role, highlight) {
     </div>`;
 }
 
+function colSection(stream, roleIdx) {
+  const s = stream;
+  const role = s.roles[roleIdx];
+  if (!role) return "";
+  const chips = roleIdx === 0 ? s.chips.map(c =>
+    `<span class="chip" style="color:${s.highlight};border-color:${s.highlight}40">${c}</span>`
+  ).join("") : "";
+  const badges = role.tracesFrom.map(t =>
+    `<span class="trace-badge" style="color:${color(t)};border-color:${color(t)}40;background:${color(t)}0d">↑ ${t}</span>`
+  ).join("");
+  return `
+    <div class="col-section" style="border-top:3px solid ${s.highlight}">
+      <div class="col-section-header">
+        <div class="stream-title">${s.title}</div>
+        <div class="role-header" style="margin-top:10px;padding-bottom:0;border-bottom:none">
+          <span class="role-name" style="color:${s.highlight}">${role.role}</span>
+          <div class="trace-badges">${badges}</div>
+        </div>
+        ${chips ? `<div class="chip-row" style="margin-top:10px;margin-bottom:0">${chips}</div>` : ""}
+      </div>
+      <div class="kpi-grid">${role.kpis.map(kpiCard).join("")}</div>
+    </div>`;
+}
+
 function render() {
   const deptCards = DATA.dept.kpis.map(kpiCard).join("");
 
-  const streamsHtml = DATA.streams.map(s => {
-    const chips = s.chips.map(c =>
-      `<span class="chip" style="color:${s.highlight};border-color:${s.highlight}40">${c}</span>`
-    ).join("");
-
-    const rolesHtml = s.roles.map((r, i) => {
-      const sep = i > 0 ? `<div class="role-sep">↓</div>` : "";
-      return sep + roleSection(r, s.highlight);
-    }).join("");
-
-    return `
-      <div class="stream-block" style="border-top:3px solid ${s.highlight}">
-        <div class="stream-header-row">
-          <div>
-            <div class="stream-title">${s.title}</div>
-          </div>
-        </div>
-        <div class="chip-row">${chips}</div>
-        ${rolesHtml}
-      </div>`;
-  }).join("");
+  const col2 = DATA.streams.map(s => colSection(s, 0)).join("");
+  const col3 = DATA.streams.map(s => colSection(s, 1)).join("");
 
   const html = `
-    <div class="level-label">Уровень 1</div>
-    <div class="dept-block">
-      <div class="block-title-row">
-        <div>
-          <div class="block-title">ИТ Департамент</div>
-          <div class="block-sub">Общие KPI · Источник для всех ролей</div>
+    <div class="cascade-grid">
+
+      <div class="cascade-col">
+        <div class="level-label">Уровень 1</div>
+        <div class="col-section" style="border-top:3px solid #1a1a1a">
+          <div class="col-section-header">
+            <div class="stream-title">ИТ Департамент</div>
+            <div class="block-sub" style="margin-top:4px">Общие KPI · Источник для всех ролей</div>
+          </div>
+          <div class="kpi-grid">${deptCards}</div>
         </div>
       </div>
-      <div class="kpi-grid">${deptCards}</div>
+
+      <div class="cascade-sep">→</div>
+
+      <div class="cascade-col">
+        <div class="level-label">Уровень 2</div>
+        ${col2}
+      </div>
+
+      <div class="cascade-sep">→</div>
+
+      <div class="cascade-col">
+        <div class="level-label">Уровень 3</div>
+        ${col3}
+      </div>
+
     </div>
-    <div class="arrow-divider">↓</div>
-    <div class="level-label">Уровень 2</div>
-    <div class="streams">${streamsHtml}</div>
     <div class="legend">
       <span class="legend-label">Легенда</span>
       ${[
-        {c:"#1a1a1a", l:"Общий KPI (K1–K4)"},
-        {c:"#b8860b", l:"Руководитель кластера (C1–C4)"},
-        {c:"#4a7c59", l:"Руководитель РЦЭ (R1–R5)"},
-        {c:"#3d6491", l:"Product Owner (P1–P4)"},
-        {c:"#7a5c8a", l:"Специалист РЦЭ (S1–S4)"},
+        {c:"#1a1a1a", l:"ИТ Департамент (K1–K4)"},
+        {c:"#8a6800", l:"Руководитель кластера (C1–C4)"},
+        {c:"#2e6b48", l:"Руководитель РЦЭ (R1–R5)"},
+        {c:"#2a5480", l:"Product Owner (P1–P4)"},
+        {c:"#5c3d7a", l:"Специалист РЦЭ (S1–S4)"},
       ].map(i=>`<div class="legend-item"><div class="legend-dot" style="background:${i.c}"></div><span class="legend-text">${i.l}</span></div>`).join("")}
       <span class="legend-hint">Наведите на карточку для подсветки трассировки</span>
     </div>`;
@@ -641,7 +670,7 @@ function applyZoom(v) {
   inner.style.zoom = v / 100;
   zoomVal.textContent = v + "%";
 }
-applyZoom(slider.value);
+applyZoom(Number(slider.value));
 slider.addEventListener("input", () => applyZoom(slider.value));
 </script>
 </body>
