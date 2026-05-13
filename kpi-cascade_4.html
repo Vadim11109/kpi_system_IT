@@ -19,7 +19,7 @@
     font-size: 15px;
   }
   .inner {
-    width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
@@ -658,13 +658,12 @@ render();
 // Zoom
 const slider = document.getElementById("zoomSlider");
 const zoomVal = document.getElementById("zoomValue");
-const inner = document.querySelector(".inner");
 function applyZoom(v) {
-  inner.style.zoom = v / 100;
+  document.documentElement.style.zoom = v / 100;
   zoomVal.textContent = v + "%";
 }
 applyZoom(Number(slider.value));
-slider.addEventListener("input", () => applyZoom(slider.value));
+slider.addEventListener("input", () => applyZoom(Number(slider.value)));
 </script>
 </body>
 </html>
