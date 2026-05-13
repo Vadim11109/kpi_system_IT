@@ -488,13 +488,9 @@ const DATA = {
         },
         {
           role: "Специалист РЦЭ",
-          tracesFrom: ["R1","R2","R3","R5"],
-          kpis: [
-            { id:"S1", label:"% задач в срок", target:"≥ 85%", trace:"R2", desc:"Личная дисциплина по дедлайнам задач в Jira" },
-            { id:"S2", label:"Соблюдение квоты на разбор техдолга", target:"≥ 15% задач в спринте", trace:"R1", desc:"Специалист резервирует согласованную долю спринта на расчистку технического долга" },
-            { id:"S3", label:"Выполнение индивидуального плана развития (ИПР)", target:"100%", trace:"R4", desc:"Реализация согласованного с руководителем квартального плана развития — курсы, сертификации, компетенции" },
-            { id:"S4", label:"Использование AI в работе", target:"регулярно", trace:"R5", desc:"Фиксация применения AI-инструментов в таймшите / отчёте по треку" },
-          ]
+          tracesFrom: [],
+          kpis: [],
+          inProgress: true
         }
       ]
     }
@@ -545,14 +541,26 @@ function roleSection(role, highlight) {
   const badges = role.tracesFrom.map(t =>
     `<span class="trace-badge" style="color:${color(t)};border-color:${color(t)}40;background:${color(t)}0d">↑ ${t}</span>`
   ).join("");
-  const cards = role.kpis.map(kpiCard).join("");
+  const content = role.inProgress
+    ? `<div style="
+        border:1px dashed #d9d7d0;
+        border-radius:3px;
+        padding:18px 20px;
+        color:#aaa;
+        font-size:12px;
+        font-weight:500;
+        letter-spacing:1.5px;
+        text-transform:uppercase;
+        text-align:center;
+      ">В проработке</div>`
+    : `<div class="kpi-grid">${role.kpis.map(kpiCard).join("")}</div>`;
   return `
     <div class="role-section">
       <div class="role-header">
-        <span class="role-name" style="color:${highlight}">${role.role}</span>
+        <span class="role-name" style="color:${role.inProgress ? '#bbb' : highlight}">${role.role}</span>
         <div class="trace-badges">${badges}</div>
       </div>
-      <div class="kpi-grid">${cards}</div>
+      ${content}
     </div>`;
 }
 
