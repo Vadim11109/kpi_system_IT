@@ -416,6 +416,7 @@
 
 <script>
 const COLORS = {
+  B1:"#7b3045", B2:"#7b3045", B3:"#7b3045", B4:"#7b3045",
   K1:"#1a1a1a", K2:"#1a1a1a", K3:"#1a1a1a", K4:"#1a1a1a",
   C1:"#8a6800", C2:"#8a6800", C3:"#8a6800", C4:"#8a6800",
   R1:"#2e6b48", R2:"#2e6b48", R3:"#2e6b48", R4:"#2e6b48", R5:"#2e6b48",
@@ -424,6 +425,7 @@ const COLORS = {
 };
 
 const LEVEL_STYLES = {
+  B: { bg:"#fdf0f3", border:"#e8b8c4", badgeBg:"#7b3045", badgeText:"#fff" },
   K: { bg:"#f5f5f4", border:"#d8d7d4", badgeBg:"#1a1a1a", badgeText:"#fff" },
   C: { bg:"#fdf8eb", border:"#e8d99a", badgeBg:"#8a6800", badgeText:"#fff" },
   R: { bg:"#eef7f2", border:"#a8d9bc", badgeBg:"#2e6b48", badgeText:"#fff" },
@@ -432,12 +434,20 @@ const LEVEL_STYLES = {
 };
 
 const DATA = {
+  company: {
+    goals: [
+      { id:"B1", label:"Обеспечить компанию актуальными и удобными IT инструментами", desc:"Цель компании · напрямую определяет повестку ИТ-департамента" },
+      { id:"B2", label:"Сократить сроки реализации проектов", desc:"Цель компании · ИТ обеспечивает скорость поставки через автоматизацию и инструменты" },
+      { id:"B3", label:"Сократить расходы", desc:"Цель компании · ИТ контролирует эффективность бюджета и TCO решений" },
+      { id:"B4", label:"Обеспечить нормальное функционирование Компании", desc:"Цель компании · ИТ обеспечивает стабильность и доступность критических систем" },
+    ]
+  },
   dept: {
     kpis: [
-      { id:"K1", label:"Удовлетворённость бизнеса (CSI)", target:"≥ 4.0 / 5.0", desc:"NPS/CSI опрос бизнес-заказчиков по всем кластерам, квартально" },
-      { id:"K2", label:"Соблюдение сроков по целевым инициативам", target:"≥ 85%", desc:"Доля задач, закрытых в согласованный срок, по всему департаменту" },
-      { id:"K3", label:"Доступность критических систем", target:"≥ 99.5%", desc:"Uptime ключевых ИТ-систем департамента по данным мониторинга, ежемесячно" },
-      { id:"K4", label:"Исполнение ИТ-бюджета", target:"±5%", desc:"Отклонение факт/план по бюджету ресурсов и подрядчиков" },
+      { id:"K1", label:"Удовлетворённость бизнеса (CSI)", target:"≥ 4.0 / 5.0", trace:"B1", desc:"NPS/CSI опрос бизнес-заказчиков по всем кластерам, квартально" },
+      { id:"K2", label:"Соблюдение сроков по целевым инициативам", target:"≥ 85%", trace:"B2", desc:"Доля задач, закрытых в согласованный срок, по всему департаменту" },
+      { id:"K3", label:"Доступность критических систем", target:"≥ 99.5%", trace:"B4", desc:"Uptime ключевых ИТ-систем департамента по данным мониторинга, ежемесячно" },
+      { id:"K4", label:"Исполнение ИТ-бюджета", target:"±5%", trace:"B3", desc:"Отклонение факт/план по бюджету ресурсов и подрядчиков" },
     ]
   },
   streams: [
@@ -585,7 +595,20 @@ function render() {
       </div>`;
   }).join("");
 
+  const companyCards = DATA.company.goals.map(kpiCard).join("");
+
   const html = `
+    <div class="level-label">Уровень 0 — Цели Sminex</div>
+    <div class="dept-block" style="border-top-color:#7b3045">
+      <div class="block-title-row">
+        <div>
+          <div class="block-title">Цели компании</div>
+          <div class="block-sub">Стратегические цели Sminex, которые обеспечивает ИТ-департамент</div>
+        </div>
+      </div>
+      <div class="kpi-grid">${companyCards}</div>
+    </div>
+    <div class="arrow-divider">↓</div>
     <div class="level-label">Уровень 1</div>
     <div class="dept-block">
       <div class="block-title-row">
@@ -602,6 +625,7 @@ function render() {
     <div class="legend">
       <span class="legend-label">Легенда</span>
       ${[
+        {c:"#7b3045", l:"Цели Sminex (B1–B4)"},
         {c:"#1a1a1a", l:"ИТ Департамент (K1–K4)"},
         {c:"#8a6800", l:"Руководитель кластера (C1–C4)"},
         {c:"#2e6b48", l:"Руководитель РЦЭ (R1–R5)"},
